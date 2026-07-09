@@ -1,0 +1,539 @@
+
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Pachanga Puig Val Park</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px; line-height: 1.6;
+    background: #f7f8fa; color: #1f2328;
+    padding-bottom: 48px;
+  }
+  .page { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+
+  .site-header { background: #1f2328; color: #fff; padding: 20px 24px 0; max-width: 100%; }
+  .site-header .inner { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+  .site-header h1 { font-size: 22px; font-weight: 700; }
+  .site-header p  { color: #adb5bd; font-size: 13px; margin-top: 2px; }
+
+  .tab-bar { background: #1f2328; max-width: 100%; position: sticky; top: 0; z-index: 20; }
+  .tab-bar .inner { max-width: 760px; margin: 0 auto; padding: 0 16px; display: flex; gap: 2px; overflow-x: auto; }
+  .tab-bar a { display: block; padding: 10px 18px; font-size: 13px; font-weight: 600; color: #adb5bd; text-decoration: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .tab-bar a:hover { color: #fff; }
+
+  .panel { display: none; }
+  .panel:target { display: block; }
+
+  body:has(#panel-j1:target)     .tab-bar a[href="#panel-j1"]     { color: #fff; border-bottom-color: #3b82d4; }
+  body:has(#panel-j2:target)     .tab-bar a[href="#panel-j2"]     { color: #fff; border-bottom-color: #3b82d4; }
+  body:has(#panel-season:target) .tab-bar a[href="#panel-season"] { color: #fff; border-bottom-color: #3b82d4; }
+  body:has(#panel-matrix:target) .tab-bar a[href="#panel-matrix"] { color: #fff; border-bottom-color: #3b82d4; }
+
+  .welcome { display: block; text-align: center; padding: 48px 16px; color: #57606a; }
+  .welcome h2 { font-size: 18px; font-weight: 700; color: #1f2328; margin-bottom: 8px; }
+  .welcome p  { font-size: 14px; margin-bottom: 24px; }
+  .welcome-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .welcome-links a { display: inline-block; background: #1f2328; color: #fff; padding: 10px 22px; border-radius: 6px; font-size: 13px; font-weight: 600; text-decoration: none; }
+  .welcome-links a:hover { background: #3b82d4; }
+  body:has(.panel:target) .welcome { display: none; }
+
+  /* shared */
+  .sub-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #57606a; margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 1px solid #e5e7eb; }
+  .sub-title.first { margin-top: 0; }
+
+  .score-banner { display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+  .score-side { flex: 1; padding: 16px; text-align: center; }
+  .score-side.white { background: #f7f8fa; }
+  .score-side.dark  { background: #1f2328; color: #fff; }
+  .lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: #57606a; }
+  .score-side.dark .lbl { color: #adb5bd; }
+  .num { font-size: 44px; font-weight: 800; line-height: 1; margin: 4px 0; }
+  .score-sep { font-size: 24px; color: #adb5bd; padding: 0 10px; }
+  .win-badge { display: inline-block; background: #3b82d4; color: #fff; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; margin-top: 2px; }
+  .spacer { height: 20px; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+  .stat { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; text-align: center; }
+  .stat .v { font-size: 24px; font-weight: 800; line-height: 1; }
+  .stat .l { font-size: 10px; color: #57606a; margin-top: 3px; text-transform: uppercase; letter-spacing: .5px; }
+
+  .teams { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .team-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; }
+  .team-card h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #57606a; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb; }
+  .pr { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid #f0f1f3; font-size: 13px; }
+  .pr:last-child { border-bottom: none; }
+
+  .bars { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 18px 10px; margin-bottom: 16px; }
+  .br { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .bn { font-size: 12px; font-weight: 600; width: 88px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bt { flex: 1; background: #f0f1f3; border-radius: 4px; height: 15px; }
+  .bf { height: 15px; border-radius: 4px; font-size: 10px; font-weight: 700; color: #fff; display: flex; align-items: center; padding-left: 6px; min-width: 22px; }
+  .fw { background: #7c5cd8; } .fd { background: #3b82d4; }
+  .bv { font-size: 12px; font-weight: 700; min-width: 16px; }
+  .leg-row { display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
+  .leg { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #57606a; }
+  .ld { width: 10px; height: 10px; border-radius: 2px; }
+
+  .tw { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 16px; overflow: hidden; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: #f7f8fa; }
+  th { padding: 8px 11px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #57606a; border-bottom: 1px solid #e5e7eb; white-space: nowrap; }
+  td { padding: 8px 11px; font-size: 13px; border-bottom: 1px solid #f0f1f3; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f7f8fa; }
+
+  .rk { font-weight: 700; color: #57606a; }
+  .rk1 { color: #3b82d4; font-size: 15px; }
+  .mvp { background: #3b82d4; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 20px; margin-left: 4px; }
+  .bw { background: #ede9fe; color: #7c5cd8; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 20px; }
+  .bd { background: #dbeafe; color: #3b82d4; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 20px; }
+  .btw { background: #e5e7eb; color: #57606a; font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 20px; margin-left: 3px; }
+  .btd { background: #1f2328; color: #fff; font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 20px; margin-left: 3px; }
+  .pb { display: flex; align-items: center; gap: 5px; }
+  .pbb { height: 7px; border-radius: 3px; background: #3b82d4; }
+
+  .bajas { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; }
+  .baja { display: flex; gap: 8px; padding: 4px 0; border-bottom: 1px solid #f0f1f3; font-size: 13px; }
+  .baja:last-child { border-bottom: none; }
+  .baja strong { min-width: 100px; }
+
+  /* ── Fotos ── */
+  .photos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+  .photo-slot {
+    background: #fff; border: 2px dashed #e5e7eb; border-radius: 8px;
+    aspect-ratio: 4/3; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: #adb5bd; font-size: 11px; text-align: center; padding: 8px;
+    cursor: pointer;
+  }
+  .photo-slot .icon { font-size: 28px; margin-bottom: 4px; }
+  .photo-slot p { font-size: 10px; color: #adb5bd; margin-top: 4px; }
+  .photo-hint { background: #f0f6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; font-size: 12px; color: #3b82d4; }
+  .photo-hint strong { display: block; margin-bottom: 4px; color: #1d4ed8; }
+
+  /* ── Crónica ── */
+  .cronica-box {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+    margin-bottom: 16px; overflow: hidden;
+  }
+  .cronica-header {
+    background: #f7f8fa; padding: 12px 16px;
+    font-size: 12px; font-weight: 700; color: #57606a;
+    text-transform: uppercase; letter-spacing: .6px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .cronica-body {
+    padding: 16px; font-size: 13px; color: #1f2328;
+    line-height: 1.8; white-space: pre-wrap;
+  }
+
+  /* matrix */
+  .mw { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 16px; overflow: auto; }
+  .mw table { min-width: 600px; }
+  .mw th { font-size: 9px; padding: 6px 4px; text-align: center; }
+  .mw td { font-size: 11px; padding: 5px 4px; text-align: center; border-bottom: 1px solid #f0f1f3; }
+  .mw td:first-child { text-align: left; font-weight: 600; padding-left: 10px; min-width: 88px; font-size: 12px; }
+  .mw th:first-child { text-align: left; padding-left: 10px; }
+  .cs { background: #f0f1f3; color: #adb5bd; }
+  .c0 { color: #d1d5db; }
+  .c1 { background: #eff6ff; color: #3b82d4; font-weight: 600; }
+  .c2 { background: #bfdbfe; color: #1d4ed8; font-weight: 800; }
+
+  footer { text-align: center; font-size: 11px; color: #adb5bd; margin-top: 32px; padding-top: 16px; border-top: 1px solid #e5e7eb; }
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="inner">
+    <h1>⚽ Pachanga Puig Val Park</h1>
+    <p>Temporada Verano 2024–25 · 2 jornadas disputadas</p>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <div class="inner">
+    <a href="#panel-j1">Jornada 1</a>
+    <a href="#panel-j2">Jornada 2</a>
+    <a href="#panel-season">Temporada</a>
+    <a href="#panel-matrix">Coincidencias</a>
+  </div>
+</div>
+
+<div class="page" style="padding-top:24px">
+
+  <div class="welcome">
+    <h2>⚽ Selecciona una pestaña</h2>
+    <p>Elige qué quieres consultar:</p>
+    <div class="welcome-links">
+      <a href="#panel-j1">Jornada 1</a>
+      <a href="#panel-j2">Jornada 2</a>
+      <a href="#panel-season">Temporada</a>
+      <a href="#panel-matrix">Coincidencias</a>
+    </div>
+  </div>
+
+  
+  <div id="panel-j1" class="panel">
+    <div class="sub-title first">Resultado · Jornada 1</div>
+    <div class="score-banner">
+      <div class="score-side white"><div class="lbl">Equipo Blanco</div><div class="num">6</div><div class="spacer"></div></div>
+      <div class="score-sep">–</div>
+      <div class="score-side dark"><div class="lbl">Equipo Oscuro</div><div class="num">8</div><span class="win-badge">Victoria</span></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="v">11</div><div class="l">Jugadores</div></div>
+      <div class="stat"><div class="v">14</div><div class="l">Goles</div></div>
+      <div class="stat"><div class="v">22</div><div class="l">Picas</div></div>
+      <div class="stat"><div class="v">4</div><div class="l">Bajas</div></div>
+    </div>
+
+    <div class="sub-title">Equipos y picas</div>
+    <div class="teams">
+      <div class="team-card">
+        <h3>⬜ Equipo Blanco</h3>
+        <div class="pr"><span>Henry</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Miguel</span><span>♠️</span></div>
+        <div class="pr"><span>Jose</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Angel</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Javi Sanchis</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Caso</span><span>♠️</span></div>
+      </div>
+      <div class="team-card">
+        <h3>⬛ Equipo Oscuro</h3>
+        <div class="pr"><span>Geno</span><span>♠️</span></div>
+        <div class="pr"><span>Jorgito</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Richi</span><span>♠️♠️♠️</span></div>
+        <div class="pr"><span>Esteve</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Juanka</span><span>♠️♠️♠️ + MVP</span></div>
+      </div>
+    </div>
+
+    <div class="sub-title">Picas por jugador</div>
+    <div class="bars">
+      <div class="br"><div class="bn">Juanka</div><div class="bt"><div class="bf fd" style="width:100%">MVP·4</div></div><div class="bv">4</div></div>
+      <div class="br"><div class="bn">Richi</div><div class="bt"><div class="bf fd" style="width:75%">3</div></div><div class="bv">3</div></div>
+      <div class="br"><div class="bn">Henry</div><div class="bt"><div class="bf fw" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Jose</div><div class="bt"><div class="bf fw" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Angel</div><div class="bt"><div class="bf fw" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Javi Sanchis</div><div class="bt"><div class="bf fw" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Jorgito</div><div class="bt"><div class="bf fd" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Esteve</div><div class="bt"><div class="bf fd" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Miguel</div><div class="bt"><div class="bf fw" style="width:25%">1</div></div><div class="bv">1</div></div>
+      <div class="br"><div class="bn">Caso</div><div class="bt"><div class="bf fw" style="width:25%">1</div></div><div class="bv">1</div></div>
+      <div class="br"><div class="bn">Geno</div><div class="bt"><div class="bf fd" style="width:25%">1</div></div><div class="bv">1</div></div>
+      <div class="leg-row"><div class="leg"><div class="ld" style="background:#7c5cd8"></div>Blanco</div><div class="leg"><div class="ld" style="background:#3b82d4"></div>Oscuro</div></div>
+    </div>
+
+    <div class="sub-title">Clasificación Jornada 1</div>
+    <div class="tw"><table>
+      <thead><tr><th>#</th><th>Jugador</th><th>Equipo</th><th>Picas</th><th>Valoración</th></tr></thead>
+      <tbody>
+        <tr><td><span class="rk rk1">1</span></td><td><strong>Juanka</strong><span class="mvp">MVP</span></td><td><span class="btd">Oscuro</span></td><td><div class="pb"><div class="pbb" style="width:96px"></div>4</div></td><td>Completísimo. Gol, combinación y defensa.</td></tr>
+        <tr><td><span class="rk">2</span></td><td><strong>Richi</strong></td><td><span class="btd">Oscuro</span></td><td><div class="pb"><div class="pbb" style="width:72px"></div>3</div></td><td>Muy cerquita del MVP.</td></tr>
+        <tr><td><span class="rk">3</span></td><td><strong>Henry</strong></td><td><span class="btw">Blanco</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Buen nivel general. Asediado.</td></tr>
+        <tr><td><span class="rk">4</span></td><td><strong>Jose</strong></td><td><span class="btw">Blanco</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Debutante con goles y verticalidad.</td></tr>
+        <tr><td><span class="rk">5</span></td><td><strong>Angel</strong></td><td><span class="btw">Blanco</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Intenso en defensa. Se le pide más gol.</td></tr>
+        <tr><td><span class="rk">6</span></td><td><strong>Javi Sanchis</strong></td><td><span class="btw">Blanco</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Fue a más, acabó enchufado.</td></tr>
+        <tr><td><span class="rk">7</span></td><td><strong>Jorgito</strong></td><td><span class="btd">Oscuro</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Mermado por isquios. Detalles de clase.</td></tr>
+        <tr><td><span class="rk">8</span></td><td><strong>Esteve</strong></td><td><span class="btd">Oscuro</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Gran actitud en 2ª parte.</td></tr>
+        <tr><td><span class="rk">9</span></td><td><strong>Miguel</strong></td><td><span class="btw">Blanco</span></td><td><div class="pb"><div class="pbb" style="width:24px"></div>1</div></td><td>Eléctrico al inicio, bajó el nivel.</td></tr>
+        <tr><td><span class="rk">10</span></td><td><strong>Caso</strong></td><td><span class="btw">Blanco</span></td><td><div class="pb"><div class="pbb" style="width:24px"></div>1</div></td><td>Siempre deja el alma.</td></tr>
+        <tr><td><span class="rk">11</span></td><td><strong>Geno</strong></td><td><span class="btd">Oscuro</span></td><td><div class="pb"><div class="pbb" style="width:24px"></div>1</div></td><td>Dubitativo al inicio, fue creciendo.</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="sub-title">Bajas Jornada 1</div>
+    <div class="bajas">
+      <div class="baja"><strong>Manolo Martín</strong><span style="color:#57606a">Tirada de pierna. Solo juega con las leyendas.</span></div>
+      <div class="baja"><strong>Van Yulian</strong><span style="color:#57606a">Temas ejecutivos.</span></div>
+      <div class="baja"><strong>Garci</strong><span style="color:#57606a">Prefiere el tenis.</span></div>
+      <div class="baja"><strong>Migueli</strong><span style="color:#57606a">Está abuelo.</span></div>
+    </div>
+
+    <div class="sub-title">📸 Fotos de la jornada</div>
+    <div class="photo-hint">
+      <strong>¿Cómo añadir fotos?</strong>
+      Sube las fotos a Google Fotos, WhatsApp Web o Imgur, copia la URL de la imagen y mándamela a Bob. Las añado en la próxima actualización.
+    </div>
+    <div class="photos-grid">
+      <div class="photo-slot"><div class="icon">📷</div><p>Foto 1</p><p>Pendiente</p></div>
+      <div class="photo-slot"><div class="icon">📷</div><p>Foto 2</p><p>Pendiente</p></div>
+      <div class="photo-slot"><div class="icon">📷</div><p>Foto 3</p><p>Pendiente</p></div>
+    </div>
+
+    <div class="sub-title">📰 Crónica original</div>
+    <div class="cronica-box">
+      <div class="cronica-header">📝 Crónica Jornada 1 — Puig Val Park</div>
+      <div class="cronica-body">Buenos días a todos,
+
+Volvieron las pachangas a Puig Val Park con calor y a una buena hora para después el bañito: 20.30 h de la tarde.
+
+Comenzaron las pachangas con algunas bajas de última hora, como las de Manolo (tirada de pierna) Martin, que solo quiere jugar con las leyendas, Van Yulian, por temas ejecutivos, Garci (Porque prefiere el tenis), y Migueli, porque está abuelo.
+Pero la cosa cogió color, y con incorporaciones nuevas y sobre todo jóvenes, se pudo jugar la contienda.
+
+Vamos al lio:
+
+Equipo Blanco: Henry, Miguel, Jose (Hijo del campeón de España de Frontón), Angel, Javi Sanchis y Caso.
+Equipo oscuro: Geno, Jorgito, Richi, Esteve y Juanca.
+
+El partido comenzó muy fuerte por parte de los blancos, que llegaron a ponerse 3 a 0 con dos goles del debutante Jose. Pero fue como un amor de verano, porque enseguida los oscuros empezaron a mover la maquinaria con Richi y Jorgito al mando y un Juancar en plan goleador.
+En un parpadeo, se puso el marcador 3 a 3. En la segunda parte, el cansancio en los blancos se fue notando y bajaron el ritmo, y los oscuros ya se fueron en el marcador. En la parte final del partido, los blancos intentaron apretar, pero arriesgaron mucho, y concedían contras a los oscuros que algunas supieron materializarlas.
+
+Al final partido cómodo en líneas generales para los oscuros, que consiguen la primera victoria de la temporada con un marcador de 8 a 6.
+
+Vamos con las pikas:
+
+Equipo Blanco:
+Henry: ♠️♠️ — Se le ha visto partidos mejores. Hoy no sacó muchas espectaculares, pero estuvo a un nivel bueno en general. Asediado!!!!!
+Miguel: ♠️ — De mas a menos. Empezó eléctrico, pero fue bajando el nivel conforme avanzaba el encuentro.
+Jose: ♠️♠️ — Buen partido en líneas generales mordiendo cuando la jugada lo requería y jugando con bastante verticalidad.
+Angel: ♠️♠️ — Intenso en defensa y equilibrando al equipo por momentos.
+Javi Sanchis: ♠️♠️ — Va cogiendo sensaciones poco a poco. Fue creciendo con el partido.
+Caso: ♠️ — Partido discreto. Siempre se deja el alma y eso es de agradecer.
+
+Equipo Oscuro:
+Geno: ♠️ — Empezó el partido de portero siendo goleado en las primeras acciones. Fue creciendo en el partido.
+Jorgito: ♠️♠️ — MERMADO!!!!! Empezó el partido con olor a 3 pikas, pero duró poco por culpa de los isquios.
+Richi: ♠️♠️♠️ — Buen partido de Richi. Fue creciendo con el partido. Muy cerquita del MVP.
+Esteve: ♠️♠️ — Partido en clara ascendencia. Gran actitud y entrega en la segunda mitad.
+Juanka: ♠️♠️♠️ — MVP del partido!!!!!! Partido completísimo de Juanka. Lo hizo prácticamente todo bien con el balón.
+
+Como siempre os digo, es solo mi opinión de lo que ví, siempre desde el buen rollo. 😊
+
+Un abrazo a todos!</div>
+    </div>
+  </div>
+
+  
+  <div id="panel-j2" class="panel">
+    <div class="sub-title first">Resultado · Jornada 2</div>
+    <div class="score-banner">
+      <div class="score-side white"><div class="lbl">Equipo Blanco</div><div class="num">4</div><div class="spacer"></div></div>
+      <div class="score-sep">–</div>
+      <div class="score-side dark"><div class="lbl">Equipo Oscuro</div><div class="num">5</div><span class="win-badge">Victoria</span></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="v">12</div><div class="l">Jugadores</div></div>
+      <div class="stat"><div class="v">9</div><div class="l">Goles</div></div>
+      <div class="stat"><div class="v">25</div><div class="l">Picas</div></div>
+      <div class="stat"><div class="v">2</div><div class="l">Banquillo</div></div>
+    </div>
+
+    <div class="sub-title">Equipos y picas</div>
+    <div class="teams">
+      <div class="team-card">
+        <h3>⬜ Equipo Blanco</h3>
+        <div class="pr"><span>Caso</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Esteve</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Manolo</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Montaña</span><span>♠️♠️♠️</span></div>
+        <div class="pr"><span>Javi Sanchis</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Txuli</span><span>♠️♠️</span></div>
+      </div>
+      <div class="team-card">
+        <h3>⬛ Equipo Oscuro</h3>
+        <div class="pr"><span>Jorgito</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Geno</span><span>♠️</span></div>
+        <div class="pr"><span>Richi</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Migueli</span><span>♠️♠️♠️ + MVP</span></div>
+        <div class="pr"><span>Garci</span><span>♠️♠️</span></div>
+        <div class="pr"><span>Juanka</span><span>♠️</span></div>
+      </div>
+    </div>
+
+    <div class="sub-title">Picas por jugador</div>
+    <div class="bars">
+      <div class="br"><div class="bn">Migueli</div><div class="bt"><div class="bf fd" style="width:100%">MVP·4</div></div><div class="bv">4</div></div>
+      <div class="br"><div class="bn">Montaña</div><div class="bt"><div class="bf fw" style="width:75%">3</div></div><div class="bv">3</div></div>
+      <div class="br"><div class="bn">Caso</div><div class="bt"><div class="bf fw" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Esteve</div><div class="bt"><div class="bf fw" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Manolo</div><div class="bt"><div class="bf fw" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Javi Sanchis</div><div class="bt"><div class="bf fw" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Txuli</div><div class="bt"><div class="bf fw" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Jorgito</div><div class="bt"><div class="bf fd" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Richi</div><div class="bt"><div class="bf fd" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Garci</div><div class="bt"><div class="bf fd" style="width:50%">2</div></div><div class="bv">2</div></div>
+      <div class="br"><div class="bn">Geno</div><div class="bt"><div class="bf fd" style="width:25%">1</div></div><div class="bv">1</div></div>
+      <div class="br"><div class="bn">Juanka</div><div class="bt"><div class="bf fd" style="width:25%">1</div></div><div class="bv">1</div></div>
+      <div class="leg-row"><div class="leg"><div class="ld" style="background:#7c5cd8"></div>Blanco</div><div class="leg"><div class="ld" style="background:#3b82d4"></div>Oscuro</div></div>
+    </div>
+
+    <div class="sub-title">Clasificación Jornada 2</div>
+    <div class="tw"><table>
+      <thead><tr><th>#</th><th>Jugador</th><th>Equipo</th><th>Picas</th><th>Valoración</th></tr></thead>
+      <tbody>
+        <tr><td><span class="rk rk1">1</span></td><td><strong>Migueli</strong><span class="mvp">MVP</span></td><td><span class="btd">Oscuro</span></td><td><div class="pb"><div class="pbb" style="width:96px"></div>4</div></td><td>Portero clave + gol victoria en el descuento.</td></tr>
+        <tr><td><span class="rk">2</span></td><td><strong>Montaña</strong></td><td><span class="btw">Blanco</span></td><td><div class="pb"><div class="pbb" style="width:72px"></div>3</div></td><td>Candidato a MVP. Enorme hasta el límite.</td></tr>
+        <tr><td><span class="rk">3</span></td><td><strong>Caso</strong></td><td><span class="btw">Blanco</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Sobresaliente de portero.</td></tr>
+        <tr><td><span class="rk">4</span></td><td><strong>Esteve</strong></td><td><span class="btw">Blanco</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Muy concentrado. Sumó un gol.</td></tr>
+        <tr><td><span class="rk">5</span></td><td><strong>Manolo</strong></td><td><span class="btw">Blanco</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Muy metido. Le faltó fortuna en las claras.</td></tr>
+        <tr><td><span class="rk">6</span></td><td><strong>Javi Sanchis</strong></td><td><span class="btw">Blanco</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Más decisión. Va a más partido a partido.</td></tr>
+        <tr><td><span class="rk">7</span></td><td><strong>Txuli</strong></td><td><span class="btw">Blanco</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Incisivo. Últimos 10 minutos muy buenos.</td></tr>
+        <tr><td><span class="rk">8</span></td><td><strong>Jorgito</strong></td><td><span class="btd">Oscuro</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Renqueante pero siempre deja detalles de calidad.</td></tr>
+        <tr><td><span class="rk">9</span></td><td><strong>Richi</strong></td><td><span class="btd">Oscuro</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Sostuvo a los oscuros con zarpazos de calidad.</td></tr>
+        <tr><td><span class="rk">10</span></td><td><strong>Garci</strong></td><td><span class="btd">Oscuro</span></td><td><div class="pb"><div class="pbb" style="width:48px"></div>2</div></td><td>Se fajó en defensa todo lo que pudo.</td></tr>
+        <tr><td><span class="rk">11</span></td><td><strong>Geno</strong></td><td><span class="btd">Oscuro</span></td><td><div class="pb"><div class="pbb" style="width:24px"></div>1</div></td><td>Por momentos bien. Irá a más.</td></tr>
+        <tr><td><span class="rk">12</span></td><td><strong>Juanka</strong></td><td><span class="btd">Oscuro</span></td><td><div class="pb"><div class="pbb" style="width:24px"></div>1</div></td><td>Partido discreto. Esperamos mejor versión.</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="sub-title">📸 Fotos de la jornada</div>
+    <div class="photo-hint">
+      <strong>¿Cómo añadir fotos?</strong>
+      Sube las fotos a Google Fotos, WhatsApp Web o Imgur, copia la URL de la imagen y mándamela a Bob. Las añado en la próxima actualización.
+    </div>
+    <div class="photos-grid">
+      <div class="photo-slot"><div class="icon">📷</div><p>Foto 1</p><p>Pendiente</p></div>
+      <div class="photo-slot"><div class="icon">📷</div><p>Foto 2</p><p>Pendiente</p></div>
+      <div class="photo-slot"><div class="icon">📷</div><p>Foto 3</p><p>Pendiente</p></div>
+    </div>
+
+    <div class="sub-title">📰 Crónica original</div>
+    <div class="cronica-box">
+      <div class="cronica-header">📝 Crónica Jornada 2 — Puig Val Park</div>
+      <div class="cronica-body">Buenos días otro día más.
+
+Segunda pachanga de verano en coliseo de Puig Val. Dia de temperaturas altas que hizo mella durante el choque.
+
+El partido empezó con puntualidad británica a las 20.30 h, dejando a Genovés y a Esteve a la espera de su oportunidad en el banquillo por llegar tarde.
+
+Equipo Blanco: Caso, Esteve, Manolo, Montaña, Javi Sanchis y Txuli.
+Equipo Oscuro: Jorgito, Genovés, Richi, Migueli, Garci y Juanka.
+
+Partido que empezó con ritmo por parte de los dos equipos con alternativas en el marcador, pero muy pronto, sobre los 10-15 minutos empezaron los problemas para los oscuros, que empezaron a desordenarse mucho en defensa.
+A los blancos se les veía durante todo el partido con un puntito más a nivel físico, pero los oscuros, a pesar de esto, no se rendía y a base de combinaciones de calidad y arreones se mantuvo en el partido durante los 90 minutos.
+La primera mitad acabó con empate y en el segundo tiempo fue un carrusel de ocasiones por ambos equipos, con mucho protagonismo para los porteros con un Caso y un Migueli inspirados.
+
+Tras varias alternativas en el marcador, se llegó a los últimos 5 minutos con empate. Esos últimos minutos asediaron los blancos con varias ocasiones de Txuli, Montaña y sobre todo Manolo. Pero como siempre se dice en esto del futbol... el que perdona la acaba pagando. En el descuento, balón de Richi para Migueli, que colocó el cuero por el único hueco que había.
+
+Al final 5-4 para los oscuros que suman la segunda victoria de la temporada veraniega.
+
+Vamos con las pikas:
+
+Equipo Blanco:
+Caso: ♠️♠️ — Sobresaliente de portero y otra vez mordiendo de jugador. Gran partido de Caso.
+Esteve: ♠️♠️ — Muy concentrado. Bien colocado y saliendo a la contra con rapidez. Sumó otro gol.
+Manolo: ♠️♠️ — Muy metido en el partido. Cuando tuvo las ocasiones para decantar el partido, le faltó fortuna.
+Montaña: ♠️♠️♠️ — Si no es porque su equipo perdió, otro candidato claro a MVP. Estuvo enorme.
+Javi Sanchis: ♠️♠️ — Viene de estar mermado, pero poco a poco se le va viendo con mas ritmo.
+Txuli: ♠️♠️ — Incisivo!!!!! Buen partido de Van Yulian. Sacó la reserva en los últimos 10 minutos.
+
+Equipo Oscuro:
+Jorgito: ♠️♠️ — Renqueante. No termina de tener continuidad, pero siempre deja detalles de calidad.
+Geno: ♠️ — Por momentos estuvo bien, pero también fue a menos desfondándose.
+Richi: ♠️♠️ — Siempre tiene un punto extra. Daba zarpazos de calidad sosteniendo a los oscuros.
+Migueli: ♠️♠️♠️ — MVP del encuentro!!!!!!!! De portero hizo intervenciones de valor gol y metió el gol de la victoria en el descuento.
+Garci: ♠️♠️ — Se fajó en defensa todo lo que pudo intentando poner orden.
+Juanka: ♠️ — Partido discreto de Juanka. Esperamos una mejor versión el próximo encuentro.
+
+Un abrazo a todos.</div>
+    </div>
+  </div>
+
+  
+  <div id="panel-season" class="panel">
+    <div class="sub-title first">Ranking acumulado — de mayor a menor picas</div>
+    <div class="tw"><table>
+      <thead><tr><th>#</th><th>Jugador</th><th>PJ</th><th>Picas</th><th>Media</th><th>MVPs</th><th>J1</th><th>J2</th></tr></thead>
+      <tbody>
+        <tr><td><span class="rk rk1">1</span></td><td><strong>Juanka</strong><span class="mvp">MVP J1</span></td><td>2</td><td><div class="pb"><div class="pbb" style="width:100px"></div><strong>5</strong></div></td><td>2.5</td><td>1</td><td><span class="btd">Osc·4</span></td><td><span class="btd">Osc·1</span></td></tr>
+        <tr><td><span class="rk">2</span></td><td><strong>Richi</strong></td><td>2</td><td><div class="pb"><div class="pbb" style="width:100px"></div><strong>5</strong></div></td><td>2.5</td><td>0</td><td><span class="btd">Osc·3</span></td><td><span class="btd">Osc·2</span></td></tr>
+        <tr><td><span class="rk">3</span></td><td><strong>Migueli</strong><span class="mvp">MVP J2</span></td><td>1</td><td><div class="pb"><div class="pbb" style="width:80px"></div><strong>4</strong></div></td><td>4.0</td><td>1</td><td>—</td><td><span class="btd">Osc·4</span></td></tr>
+        <tr><td><span class="rk">4</span></td><td><strong>Jorgito</strong></td><td>2</td><td><div class="pb"><div class="pbb" style="width:80px"></div><strong>4</strong></div></td><td>2.0</td><td>0</td><td><span class="btd">Osc·2</span></td><td><span class="btd">Osc·2</span></td></tr>
+        <tr><td><span class="rk">5</span></td><td><strong>Javi Sanchis</strong></td><td>2</td><td><div class="pb"><div class="pbb" style="width:80px"></div><strong>4</strong></div></td><td>2.0</td><td>0</td><td><span class="btw">Bco·2</span></td><td><span class="btw">Bco·2</span></td></tr>
+        <tr><td><span class="rk">6</span></td><td><strong>Esteve</strong></td><td>2</td><td><div class="pb"><div class="pbb" style="width:80px"></div><strong>4</strong></div></td><td>2.0</td><td>0</td><td><span class="btd">Osc·2</span></td><td><span class="btw">Bco·2</span></td></tr>
+        <tr><td><span class="rk">7</span></td><td><strong>Montaña</strong></td><td>1</td><td><div class="pb"><div class="pbb" style="width:60px"></div><strong>3</strong></div></td><td>3.0</td><td>0</td><td>—</td><td><span class="btw">Bco·3</span></td></tr>
+        <tr><td><span class="rk">8</span></td><td><strong>Caso</strong></td><td>2</td><td><div class="pb"><div class="pbb" style="width:60px"></div><strong>3</strong></div></td><td>1.5</td><td>0</td><td><span class="btw">Bco·1</span></td><td><span class="btw">Bco·2</span></td></tr>
+        <tr><td><span class="rk">9</span></td><td><strong>Henry</strong></td><td>1</td><td><div class="pb"><div class="pbb" style="width:40px"></div><strong>2</strong></div></td><td>2.0</td><td>0</td><td><span class="btw">Bco·2</span></td><td>—</td></tr>
+        <tr><td><span class="rk">10</span></td><td><strong>Jose</strong></td><td>1</td><td><div class="pb"><div class="pbb" style="width:40px"></div><strong>2</strong></div></td><td>2.0</td><td>0</td><td><span class="btw">Bco·2</span></td><td>—</td></tr>
+        <tr><td><span class="rk">11</span></td><td><strong>Angel</strong></td><td>1</td><td><div class="pb"><div class="pbb" style="width:40px"></div><strong>2</strong></div></td><td>2.0</td><td>0</td><td><span class="btw">Bco·2</span></td><td>—</td></tr>
+        <tr><td><span class="rk">12</span></td><td><strong>Manolo</strong></td><td>1</td><td><div class="pb"><div class="pbb" style="width:40px"></div><strong>2</strong></div></td><td>2.0</td><td>0</td><td>—</td><td><span class="btw">Bco·2</span></td></tr>
+        <tr><td><span class="rk">13</span></td><td><strong>Garci</strong></td><td>1</td><td><div class="pb"><div class="pbb" style="width:40px"></div><strong>2</strong></div></td><td>2.0</td><td>0</td><td>—</td><td><span class="btd">Osc·2</span></td></tr>
+        <tr><td><span class="rk">14</span></td><td><strong>Txuli</strong></td><td>1</td><td><div class="pb"><div class="pbb" style="width:40px"></div><strong>2</strong></div></td><td>2.0</td><td>0</td><td>—</td><td><span class="btw">Bco·2</span></td></tr>
+        <tr><td><span class="rk">15</span></td><td><strong>Geno</strong></td><td>2</td><td><div class="pb"><div class="pbb" style="width:40px"></div><strong>2</strong></div></td><td>1.0</td><td>0</td><td><span class="btd">Osc·1</span></td><td><span class="btd">Osc·1</span></td></tr>
+        <tr><td><span class="rk">16</span></td><td><strong>Miguel</strong></td><td>1</td><td><div class="pb"><div class="pbb" style="width:20px"></div><strong>1</strong></div></td><td>1.0</td><td>0</td><td><span class="btw">Bco·1</span></td><td>—</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="sub-title">Veces en Blanco vs Oscuro</div>
+    <div class="tw"><table>
+      <thead><tr><th>Jugador</th><th>PJ</th><th>En Blanco</th><th>En Oscuro</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Javi Sanchis</strong></td><td>2</td><td><span class="bw">Blanco ×2</span></td><td>—</td></tr>
+        <tr><td><strong>Caso</strong></td><td>2</td><td><span class="bw">Blanco ×2</span></td><td>—</td></tr>
+        <tr><td><strong>Jorgito</strong></td><td>2</td><td>—</td><td><span class="bd">Oscuro ×2</span></td></tr>
+        <tr><td><strong>Richi</strong></td><td>2</td><td>—</td><td><span class="bd">Oscuro ×2</span></td></tr>
+        <tr><td><strong>Juanka</strong></td><td>2</td><td>—</td><td><span class="bd">Oscuro ×2</span></td></tr>
+        <tr><td><strong>Geno</strong></td><td>2</td><td>—</td><td><span class="bd">Oscuro ×2</span></td></tr>
+        <tr><td><strong>Esteve</strong></td><td>2</td><td><span class="bw">Blanco ×1</span></td><td><span class="bd">Oscuro ×1</span></td></tr>
+        <tr><td><strong>Henry</strong></td><td>1</td><td><span class="bw">Blanco ×1</span></td><td>—</td></tr>
+        <tr><td><strong>Miguel</strong></td><td>1</td><td><span class="bw">Blanco ×1</span></td><td>—</td></tr>
+        <tr><td><strong>Jose</strong></td><td>1</td><td><span class="bw">Blanco ×1</span></td><td>—</td></tr>
+        <tr><td><strong>Angel</strong></td><td>1</td><td><span class="bw">Blanco ×1</span></td><td>—</td></tr>
+        <tr><td><strong>Manolo</strong></td><td>1</td><td><span class="bw">Blanco ×1</span></td><td>—</td></tr>
+        <tr><td><strong>Montaña</strong></td><td>1</td><td><span class="bw">Blanco ×1</span></td><td>—</td></tr>
+        <tr><td><strong>Txuli</strong></td><td>1</td><td><span class="bw">Blanco ×1</span></td><td>—</td></tr>
+        <tr><td><strong>Migueli</strong></td><td>1</td><td>—</td><td><span class="bd">Oscuro ×1</span></td></tr>
+        <tr><td><strong>Garci</strong></td><td>1</td><td>—</td><td><span class="bd">Oscuro ×1</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  
+  <div id="panel-matrix" class="panel">
+    <div class="sub-title first">Matriz de coincidencias — mismo equipo</div>
+    <p style="font-size:12px;color:#57606a;margin-bottom:12px">Azul claro = 1 vez juntos · Azul intenso = 2 veces · Punto = nunca han coincidido</p>
+    
+    <div class="mw"><table>
+      <thead>
+        <tr><th>Jugador</th><th>Caso</th><th>Esteve</th><th>JaviS</th><th>Manolo</th><th>Montaña</th><th>Txuli</th><th>Henry</th><th>Miguel</th><th>Jose</th><th>Angel</th><th>Geno</th><th>Jorgito</th><th>Richi</th><th>Juanka</th><th>Migueli</th><th>Garci</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr><td><strong>Caso</strong></td><td class="cs">—</td><td class="c1">1</td><td class="c2">2</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td></tr>
+        
+        <tr><td><strong>Esteve</strong></td><td class="c1">1</td><td class="cs">—</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td></tr>
+        
+        <tr><td><strong>Javi Sanchis</strong></td><td class="c2">2</td><td class="c1">1</td><td class="cs">—</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td></tr>
+        
+        <tr><td><strong>Manolo</strong></td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="cs">—</td><td class="c1">1</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td></tr>
+        
+        <tr><td><strong>Montaña</strong></td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="cs">—</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td></tr>
+        
+        <tr><td><strong>Txuli</strong></td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="cs">—</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td></tr>
+        
+        <tr><td><strong>Henry</strong></td><td class="c1">1</td><td class="c0">·</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="cs">—</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td></tr>
+        
+        <tr><td><strong>Miguel</strong></td><td class="c1">1</td><td class="c0">·</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c1">1</td><td class="cs">—</td><td class="c1">1</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td></tr>
+        
+        <tr><td><strong>Jose</strong></td><td class="c1">1</td><td class="c0">·</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c1">1</td><td class="c1">1</td><td class="cs">—</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td></tr>
+        
+        <tr><td><strong>Angel</strong></td><td class="c1">1</td><td class="c0">·</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="cs">—</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td></tr>
+        
+        <tr><td><strong>Geno</strong></td><td class="c0">·</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="cs">—</td><td class="c2">2</td><td class="c2">2</td><td class="c2">2</td><td class="c1">1</td><td class="c1">1</td></tr>
+        
+        <tr><td><strong>Jorgito</strong></td><td class="c0">·</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c2">2</td><td class="cs">—</td><td class="c2">2</td><td class="c2">2</td><td class="c1">1</td><td class="c1">1</td></tr>
+        
+        <tr><td><strong>Richi</strong></td><td class="c0">·</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c2">2</td><td class="c2">2</td><td class="cs">—</td><td class="c2">2</td><td class="c1">1</td><td class="c1">1</td></tr>
+        
+        <tr><td><strong>Juanka</strong></td><td class="c0">·</td><td class="c1">1</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c2">2</td><td class="c2">2</td><td class="c2">2</td><td class="cs">—</td><td class="c1">1</td><td class="c1">1</td></tr>
+        
+        <tr><td><strong>Migueli</strong></td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="cs">—</td><td class="c1">1</td></tr>
+        
+        <tr><td><strong>Garci</strong></td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c0">·</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="c1">1</td><td class="cs">—</td></tr>
+      </tbody>
+    </table></div>
+    <p style="font-size:12px;color:#57606a;margin-bottom:20px">
+      <strong>Duplas más repetidas (×2):</strong>
+      Geno–Jorgito · Geno–Richi · Geno–Juanka · Jorgito–Richi · Jorgito–Juanka · Richi–Juanka (todos en Oscuro) ·
+      Caso–Javi Sanchis (siempre en Blanco).
+    </p>
+  </div>
+
+  <footer>Made with IBM Bob</footer>
+</div>
+</body>
+</html>
